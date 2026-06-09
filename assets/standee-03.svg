@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-labelledby="t3 d3">
+  <title id="t3">Standee Graduation Pop Up</title>
+  <desc id="d3">Graduation themed standee with cap and diploma.</desc>
+  <defs>
+    <linearGradient id="bg3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffe9bd"/>
+      <stop offset="100%" stop-color="#f0a93e"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#bg3)"/>
+  <rect x="105" y="710" width="590" height="170" rx="24" fill="#f6c15f"/>
+  <rect x="145" y="740" width="510" height="110" rx="16" fill="#ffe4ab"/>
+  <rect x="170" y="230" width="460" height="500" rx="30" fill="#fff7e5" stroke="#e2ab45" stroke-width="8"/>
+  <ellipse cx="400" cy="362" rx="62" ry="70" fill="#ffe6d0"/>
+  <rect x="320" y="398" width="160" height="210" rx="70" fill="#1f2e46"/>
+  <rect x="300" y="274" width="200" height="18" rx="9" fill="#1a2639"/>
+  <polygon points="400,200 510,270 400,340 290,270" fill="#24344d"/>
+  <line x1="510" y1="270" x2="542" y2="352" stroke="#24344d" stroke-width="6"/>
+  <circle cx="542" cy="357" r="10" fill="#24344d"/>
+  <circle cx="382" cy="362" r="6" fill="#4d3227"/>
+  <circle cx="418" cy="362" r="6" fill="#4d3227"/>
+  <path d="M378 394 Q400 414 422 394" fill="none" stroke="#6a4335" stroke-width="6" stroke-linecap="round"/>
+  <rect x="292" y="500" width="56" height="150" rx="26" fill="#ffe6d0"/>
+  <rect x="452" y="500" width="56" height="150" rx="26" fill="#ffe6d0"/>
+  <rect x="252" y="770" width="296" height="56" rx="28" fill="#8b6225"/>
+  <text x="400" y="807" font-family="Arial, sans-serif" font-size="32" text-anchor="middle" fill="#fff8eb" font-weight="700">GRADUATION</text>
+</svg>

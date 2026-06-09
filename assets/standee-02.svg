@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-labelledby="t2 d2">
+  <title id="t2">Standee Love Memory</title>
+  <desc id="d2">Two characters in a mint love memory standee box.</desc>
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#d5f7ee"/>
+      <stop offset="100%" stop-color="#7bcfb8"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#bg2)"/>
+  <rect x="95" y="710" width="610" height="170" rx="26" fill="#77bca9"/>
+  <rect x="140" y="740" width="520" height="110" rx="16" fill="#c2ebde"/>
+  <rect x="160" y="230" width="480" height="500" rx="30" fill="#effcf7" stroke="#79bea9" stroke-width="8"/>
+  <circle cx="320" cy="360" r="56" fill="#ffead9"/>
+  <path d="M278 335 C286 286 354 286 362 335" fill="#4f2f24"/>
+  <circle cx="303" cy="360" r="5" fill="#4d332a"/>
+  <circle cx="337" cy="360" r="5" fill="#4d332a"/>
+  <rect x="265" y="420" width="110" height="180" rx="55" fill="#ffd6bd"/>
+  <circle cx="480" cy="360" r="56" fill="#ffe8d8"/>
+  <path d="M438 335 C446 286 514 286 522 335" fill="#3f2b23"/>
+  <circle cx="463" cy="360" r="5" fill="#4d332a"/>
+  <circle cx="497" cy="360" r="5" fill="#4d332a"/>
+  <rect x="425" y="420" width="110" height="180" rx="55" fill="#ffcbb6"/>
+  <path d="M374 460 C390 445 410 445 426 460 C438 472 438 494 420 510 C410 518 400 523 400 523 C400 523 390 518 380 510 C362 494 362 472 374 460Z" fill="#ff6b74"/>
+  <rect x="238" y="770" width="324" height="56" rx="28" fill="#2d8d75"/>
+  <text x="400" y="807" font-family="Arial, sans-serif" font-size="34" text-anchor="middle" fill="#ecfff9" font-weight="700">LOVE MEMORY</text>
+</svg>
