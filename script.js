@@ -80,7 +80,7 @@ if (uploadInput && userPreview && previewFrame && scaleRange && previewInner) {
     const selected = templateMeta[state.templateKey]?.label || 'Mẫu Standee';
     const nameVal = customerInput ? customerInput.value.trim() : 'Linh & Minh';
     const message = `Mình muốn đặt concept ${selected} với tên "${nameVal}". Đã thử ghép ảnh trên website.`;
-    sendTryonZalo.href = `https://zalo.me/0984579270?text=${encodeURIComponent(message)}`;
+    sendTryonZalo.href = `https://zalo.me/0386533282?text=${encodeURIComponent(message)}`;
   };
 
   const applyImageTransform = () => {
@@ -529,17 +529,17 @@ if (aiChatForm && aiChatInput && aiChatMessages) {
           } else if (msgLower.includes('sinh nhật') || msgLower.includes('quà') || msgLower.includes('tặng')) {
             reply = 'Với dịp sinh nhật, concept Birthday Stage (gói Lite 250K) hoặc Signature Box (450K) có tích hợp đèn led sẽ cực kỳ nổi bật và ý nghĩa đó ạ! Bạn muốn làm quà tặng bạn nam hay bạn nữ, bao nhiêu nhân vật để mình tư vấn thêm nhé?';
           } else if (msgLower.includes('kỷ niệm') || msgLower.includes('yêu') || msgLower.includes('cưới') || msgLower.includes('wedding') || msgLower.includes('chibi')) {
-            reply = 'Concept Love Memory hoặc Mẫu Cưới Thanh Lịch với 2 nhân vật vẽ chibi dễ thương rất thích hợp cho dịp kỷ niệm/đám cưới đó ạ. Bạn có thể tự ghép ảnh thử ở khung bên trên hoặc nhắn Zalo 0984579270 để bên mình vẽ chibi nhé!';
+            reply = 'Concept Love Memory hoặc Mẫu Cưới Thanh Lịch với 2 nhân vật vẽ chibi dễ thương rất thích hợp cho dịp kỷ niệm/đám cưới đó ạ. Bạn có thể tự ghép ảnh thử ở khung bên trên hoặc nhắn Zalo 0386533282 để bên mình vẽ chibi nhé!';
           } else if (msgLower.includes('kỷ yếu') || msgLower.includes('tốt nghiệp') || msgLower.includes('học sinh') || msgLower.includes('trường')) {
             reply = 'Concept Kỷ Yếu / Tốt Nghiệp lưu giữ thanh xuân rất thích hợp với gói Signature Box (450K) hoặc Premium Scene (700K). Bên mình có thể dựng standee nhân vật mặc áo cử nhân kết hợp bối cảnh lớp học, bảng đen 3D nhiều lớp cực kỳ ý nghĩa ạ!';
           } else if (msgLower.includes('anime') || msgLower.includes('manga') || msgLower.includes('hoạt hình') || msgLower.includes('game') || msgLower.includes('2d')) {
-            reply = 'Với các concept nhân vật Anime, Manga hoặc nhân vật Game 2D, tụi mình sẽ dựng standee theo đúng phong cách vẽ (art-style) gốc của nhân vật, kết hợp hiệu ứng bối cảnh thế giới ảo 3D cực ngầu. Bạn gửi ảnh nhân vật qua Zalo 0984579270 nhé!';
+            reply = 'Với các concept nhân vật Anime, Manga hoặc nhân vật Game 2D, tụi mình sẽ dựng standee theo đúng phong cách vẽ (art-style) gốc của nhân vật, kết hợp hiệu ứng bối cảnh thế giới ảo 3D cực ngầu. Bạn gửi ảnh nhân vật qua Zalo 0386533282 nhé!';
           } else if (msgLower.includes('địa chỉ') || msgLower.includes('ở đâu') || msgLower.includes('shop') || msgLower.includes('cửa hàng')) {
-            reply = 'Momentbox Studio hoạt động online và nhận giao hàng toàn quốc từ TP. Hồ Chí Minh. Bạn có thể hoàn toàn yên tâm đặt hàng vì bên mình sẽ gửi bản vẽ demo 3D trước cho bạn duyệt, sau đó mới tiến hành in ấn và sản xuất ạ.';
+            reply = 'Momentbox hoạt động online và nhận giao hàng toàn quốc từ TP. Hồ Chí Minh. Bạn có thể hoàn toàn yên tâm đặt hàng vì bên mình sẽ gửi bản vẽ demo 3D trước cho bạn duyệt, sau đó mới tiến hành in ấn và sản xuất ạ.';
           } else if (msgLower.includes('zalo') || msgLower.includes('liên hệ') || msgLower.includes('đặt hàng')) {
-            reply = 'Bạn có thể nhắn tin trực tiếp qua Zalo số 0984579270 hoặc click vào nút "Chat Zalo" ở góc phải màn hình để được hỗ trợ lên ý tưởng nhanh nhất nhé!';
+            reply = 'Bạn có thể nhắn tin trực tiếp qua Zalo số 0386533282 hoặc click vào nút "Chat Zalo" ở góc phải màn hình để được hỗ trợ lên ý tưởng nhanh nhất nhé!';
           } else {
-            reply = 'Ý tưởng của bạn nghe rất tuyệt! Bạn có thể tùy chọn thêm số lượng nhân vật, tone màu chủ đạo hoặc lời chúc. Để nhận tư vấn demo 3D nhanh và chính xác nhất, bạn đừng ngần ngại gửi ảnh qua Zalo 0984579270 nhé!';
+            reply = 'Ý tưởng của bạn nghe rất tuyệt! Bạn có thể tùy chọn thêm số lượng nhân vật, tone màu chủ đạo hoặc lời chúc. Để nhận tư vấn demo 3D nhanh và chính xác nhất, bạn đừng ngần ngại gửi ảnh qua Zalo 0386533282 nhé!';
           }
           
           reply = '🤖 [Chế độ giả lập cục bộ]: ' + reply;
