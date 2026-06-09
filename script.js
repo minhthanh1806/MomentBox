@@ -571,6 +571,13 @@ if (aiChatForm && aiChatInput && aiChatMessages) {
     aiChatInput.style.height = 'auto';
     aiChatInput.style.height = `${Math.min(aiChatInput.scrollHeight, 132)}px`;
   });
+
+  aiChatInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      aiChatForm.requestSubmit();
+    }
+  });
 }
 
 // Smooth scroll for AI Chat FAB
