@@ -1,6 +1,8 @@
-const jsonHeaders = {
+﻿const jsonHeaders = {
   'Content-Type': 'application/json; charset=utf-8',
 }
+const { guard } = require('../lib/guard')
+const { CHAT_SYSTEM_PROMPT } = require('../lib/prompts')
 
 const cleanMessages = (messages) => {
   if (!Array.isArray(messages)) return []
@@ -29,6 +31,10 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({ error: 'Method not allowed' }),
     }
   }
+
+  // Chống spam: 20 tin / phút / người
+  const blocked = guard(event, { name: 'chat', limit: 20, windowMs: 60 * 1000 })
+  if (blocked) return blocked
 
   let body
   try {
@@ -80,7 +86,7 @@ exports.handler = async (event, context) => {
     }
   }
 
-  const systemPrompt = 'Bạn là một trợ lý AI thông minh, đa năng và thân thiện tương tự như ChatGPT và Gemini. Bạn trả lời bằng tiếng Việt tự nhiên. Hãy luôn trình bày câu trả lời có bố cục rõ ràng (sử dụng tiêu đề dạng ###, danh sách gạch đầu dòng, các đoạn văn ngắn) và chèn thêm các biểu tượng cảm xúc (icons/emojis) sinh động cho từng mục để người dùng dễ đọc. Có thể giải đáp mọi chủ đề, câu hỏi khác nhau của người dùng. Nếu họ hỏi về thiết kế standee 3D hoặc quà tặng của Momentbox, hãy tư vấn các gói thiết kế (Lite Box 250K, Signature Box 450K, Premium Scene 700K) và hướng dẫn liên hệ Zalo 0983806933.'
+  const systemPrompt = CHAT_SYSTEM_PROMPT
 
   try {
     // 1. If provider is Gemini, route to Google Gemini API
