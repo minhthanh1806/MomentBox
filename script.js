@@ -475,6 +475,35 @@ if (aiChatForm && aiChatInput && aiChatMessages) {
     aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
   };
 
+  const wantsImage = (text) => {
+    const t = text.toLowerCase();
+    if (/(giá|bao nhiêu|chi phí|ship|địa chỉ)/.test(t)) return false;
+    return (
+      /(tạo|gen|vẽ|render|làm|thiết kế|cho xem|cho mình).{0,40}(ảnh|hình|standee)/.test(t) ||
+      /(ảnh|hình).{0,20}standee/.test(t) ||
+      /standee.{0,40}(ảnh|hình)/.test(t) ||
+      /^(tạo|gen|vẽ|làm)\s.*standee/.test(t)
+    );
+  };
+
+  const addChatImage = (image) => {
+    const bubble = document.createElement('div');
+    bubble.className = 'ai-message ai-message-bot';
+    const src = `data:${image.mimeType};base64,${image.data}`;
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = 'Ảnh standee do AI tạo';
+    img.style.cssText = 'max-width:100%;border-radius:12px;display:block;';
+    const link = document.createElement('a');
+    link.href = src;
+    link.download = 'momentbox-standee.png';
+    link.textContent = '⬇️ Tải ảnh về';
+    link.style.cssText = 'display:inline-block;margin-top:8px;font-weight:600;';
+    bubble.append(img, link);
+    aiChatMessages.append(bubble);
+    aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+  };
+
   aiChatForm.addEventListener('submit', async (event) => {
     event.preventDefault();
 
@@ -491,6 +520,26 @@ if (aiChatForm && aiChatInput && aiChatMessages) {
     if (submitButton) submitButton.disabled = true;
 
     try {
+      if (wantsImage(message)) {
+        setChatStatus('AI đang vẽ standee, vui lòng chờ 10-30 giây...', 'loading');
+        const imgResponse = await fetch('/api/image', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: chatHistory.slice(-8) }),
+        });
+        const imgData = await imgResponse.json().catch(() => ({}));
+        if (!imgResponse.ok || !imgData.image) {
+          throw new Error(
+            imgData.error ||
+              `Chưa tạo được ảnh (mã ${imgResponse.status}). Có thể server hết thời gian chờ, bạn thử lại hoặc xem log terminal nhé.`
+          );
+        }
+        addChatImage(imgData.image);
+        chatHistory.push({ role: 'assistant', content: '(Đã tạo ảnh standee theo yêu cầu.)' });
+        setChatStatus('Muốn chỉnh gì (màu, trang phục, số nhân vật)? Cứ nhắn "tạo lại ảnh..." nhé.', 'success');
+        return;
+      }
+
       let reply;
       let isMock = false;
 
@@ -589,6 +638,48 @@ if (aiChatFab) {
     if (target) {
       target.scrollIntoView({ behavior: 'smooth' });
     }
+  });
+}
+
+// Quick Prompt Chips: bấm để điền nhanh vào ô chat AI
+const promptChips = document.querySelectorAll('.prompt-chip');
+if (promptChips.length && aiChatInput) {
+  promptChips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      const promptText = chip.dataset.prompt || chip.textContent.trim();
+      aiChatInput.value = promptText;
+      aiChatInput.dispatchEvent(new Event('input'));
+      aiChatInput.focus();
+      if (aiChatStatus) {
+        aiChatStatus.textContent = 'Đã điền gợi ý. Bạn có thể chỉnh sửa thêm hoặc bấm Gửi.';
+        aiChatStatus.dataset.tone = 'neutral';
+      }
+    });
+  });
+}
+
+// Header cuộn mượt & Menu điện thoại
+const siteHeader = document.querySelector('#siteHeader');
+const navToggle = document.querySelector('#navToggle');
+if (siteHeader) {
+  const onScroll = () => {
+    siteHeader.classList.toggle('scrolled', window.scrollY > 24);
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+}
+
+if (siteHeader && navToggle) {
+  navToggle.addEventListener('click', () => {
+    const isOpen = siteHeader.classList.toggle('nav-open');
+    navToggle.setAttribute('aria-expanded', String(isOpen));
+  });
+
+  siteHeader.querySelectorAll('.main-nav a').forEach((link) => {
+    link.addEventListener('click', () => {
+      siteHeader.classList.remove('nav-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
   });
 }
 

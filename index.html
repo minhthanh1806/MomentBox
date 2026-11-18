@@ -3,178 +3,262 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Momentbox | Thiết kế hộp quà standee 3D</title>
+    <title>MomentBox | Thiết kế hộp quà standee 3D độc bản</title>
     <meta
       name="description"
-      content="Momentbox - Dịch vụ thiết kế hộp quà standee 3D theo concept riêng, độc bản cho sinh nhật, kỷ niệm, cầu hôn và sự kiện doanh nghiệp."
+      content="MomentBox - Dịch vụ thiết kế hộp quà standee 3D theo concept riêng, độc bản cho sinh nhật, kỷ niệm, cưới, tốt nghiệp và sự kiện doanh nghiệp."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Manrope:wght@400;500;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
     <link rel="icon" type="image/jpeg" href="images/logo.jpg" />
   </head>
   <body>
-    <div class="noise" aria-hidden="true"></div>
+    <div class="ambient-bg" aria-hidden="true">
+      <span class="orb orb-pink"></span>
+      <span class="orb orb-mint"></span>
+      <span class="orb orb-peach"></span>
+    </div>
 
-    <header class="site-header">
-      <a href="#top" class="brand">
-        <img src="images/logo.jpg" width="80" height="80" alt="Logo Momentbox" class="logo" />
+    <!-- Header -->
+    <header class="site-header" id="siteHeader">
+      <a href="#top" class="brand" aria-label="MomentBox Trang chủ">
+        <img
+          src="images/logo.jpg"
+          width="46"
+          height="46"
+          alt="Logo MomentBox"
+          class="logo"
+        />
+        <span class="brand-name">Moment<span>Box</span></span>
       </a>
-      <nav class="main-nav" aria-label="Điều hướng chính">
+
+      <nav class="main-nav" id="mainNav" aria-label="Điều hướng chính">
         <a href="#about">Về chúng tôi</a>
-        <a href="#services">Dịch vụ</a>
-        <a href="#portfolio">Mẫu thiết kế</a>
-        <a href="#gallery">Ảnh tham khảo</a>
-        <a href="#ai-chat">Tư vấn AI</a>
+        <a href="#services">Bảng giá</a>
+        <a href="#portfolio">Bộ sưu tập</a>
+        <a href="#gallery">Cảm hứng</a>
+        <a href="#ai-chat" class="nav-ai-link">
+          <span class="pulse-dot" aria-hidden="true"></span>Studio AI
+        </a>
+      </nav>
+
+      <div class="header-actions">
         <a
           href="https://zalo.me/0983806933"
+          class="btn btn-small"
           target="_blank"
           rel="noopener noreferrer"
-          >Liên hệ</a
+          >Đặt concept</a
         >
-      </nav>
-      <a
-        href="https://zalo.me/0983806933"
-        class="btn btn-small"
-        target="_blank"
-        rel="noopener noreferrer"
-        >Đặt concept</a
-      >
+        <button
+          type="button"
+          class="nav-toggle"
+          id="navToggle"
+          aria-label="Mở menu điều hướng"
+          aria-expanded="false"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
     </header>
 
     <main>
+      <!-- Hero -->
       <section class="hero section reveal" id="top">
         <div class="hero-content">
-          <p class="kicker">Thiết kế quà tặng 3D độc bản</p>
+          <div class="hero-pill">
+            <span class="pulse-dot" aria-hidden="true"></span>
+            Studio quà tặng Standee 3D độc bản
+          </div>
           <h1>
             Biến kỷ niệm thành
             <span>hộp quà standee 3D</span>
-            độc bản
+            đáng nhớ mãi
           </h1>
           <p class="hero-subtitle">
-            Từ ảnh thật, câu chuyện thật đến mô hình pop-up nhiều lớp, Momentbox
-            giúp bạn tạo ra món quà khiến người nhận muốn giữ mãi.
+            Từ ảnh thật và câu chuyện riêng đến mô hình hộp kính pop-up nhiều
+            lớp. Xem trước ý tưởng ngay bằng trợ lý AI và duyệt bản demo 3D
+            trước khi sản xuất.
           </p>
           <div class="hero-actions">
+            <a href="#ai-chat" class="btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8L19 16z" fill="currentColor"/>
+              </svg>
+              Tạo thử mẫu bằng AI
+            </a>
             <a
               href="https://zalo.me/0983806933"
-              class="btn"
+              class="btn btn-ghost"
               target="_blank"
               rel="noopener noreferrer"
-              >Nhận tư vấn miễn phí</a
+              >Nhận tư vấn Zalo</a
             >
-            <a href="#portfolio" class="btn btn-ghost">Xem mẫu nổi bật</a>
           </div>
           <ul class="hero-stats" aria-label="Điểm nổi bật dịch vụ">
             <li>
-              <strong>Theo ảnh thật</strong
-              ><span>Dựng standee sát nhân vật và phong cách bạn chọn</span>
+              <strong>Dựng từ ảnh thật</strong>
+              <span>Sát biểu cảm, trang phục và phong cách riêng</span>
             </li>
             <li>
-              <strong>Trao đổi nhanh</strong
-              ><span>Chốt ý tưởng trực tiếp qua Zalo, không rườm rà</span>
+              <strong>Duyệt demo 3D</strong>
+              <span>Xem trước bản vẽ, ưng ý mới in ấn sản xuất</span>
             </li>
             <li>
-              <strong>Linh hoạt ngân sách</strong
-              ><span>Nhiều gói thiết kế phù hợp từng dịp tặng quà</span>
+              <strong>Chốt nhanh qua Zalo</strong>
+              <span>Tư vấn trực tiếp, giao hàng toàn quốc</span>
             </li>
           </ul>
         </div>
-        <div class="hero-art" aria-hidden="true">
-          <div class="gift-box">
-            <div class="face front"></div>
-            <div class="face side"></div>
-            <div class="face top"></div>
+
+        <div class="hero-visual">
+          <div class="hero-frame">
+            <img
+              src="images/z7654710991654_f9ad055107f2097f0b849ade7435ea76.jpg"
+              alt="Hộp quà standee 3D đám cưới MomentBox"
+              class="hero-main-img"
+            />
+            <div class="float-badge float-badge-top">
+              <span class="badge-icon mint">✦</span>
+              <div>
+                <strong>Hộp mica 3D đa lớp</strong>
+                <span>Khắc tên & ngày kỷ niệm</span>
+              </div>
+            </div>
+            <div class="float-badge float-badge-bottom">
+              <span class="badge-icon pink">♥</span>
+              <div>
+                <strong>Chỉ từ 250K / hộp</strong>
+                <span>Thiết kế riêng 100%</span>
+              </div>
+            </div>
           </div>
-          <div class="standee standee-a"></div>
-          <div class="standee standee-b"></div>
-          <div class="floating-tag">Tên theo yêu cầu</div>
         </div>
       </section>
 
-      <section class="section split reveal" id="about">
-        <div>
+      <!-- About -->
+      <section class="section about-section reveal" id="about">
+        <div class="about-media">
           <p class="kicker">Chất riêng từ câu chuyện</p>
-          <h2>Không chỉ là hộp quà, đó là một sân khấu mini của ký ức</h2>
-          <img src="images/love.jpg" alt="Mẫu standee tình yêu" class="love-showcase-img" loading="lazy" />
+          <h2>Không chỉ là hộp quà, đó là sân khấu mini của ký ức</h2>
+          <p class="section-lead">
+            Mỗi hộp quà MomentBox được dựng thủ công tỉ mỉ nhiều tầng không
+            gian, biến khoảnh khắc quan trọng thành món đồ trang trí đầy cảm
+            xúc trên bàn làm việc.
+          </p>
+          <div class="showcase-wrap">
+            <img
+              src="images/love.jpg"
+              alt="Mẫu hộp standee tình yêu 3D của MomentBox"
+              class="love-showcase-img"
+              loading="lazy"
+            />
+          </div>
         </div>
+
         <div class="card-grid">
           <article class="info-card">
+            <span class="step-num">01</span>
             <h3>Thiết kế theo chân dung thật</h3>
             <p>
-              Chúng tôi dựng standee 3D từ ảnh thật, tạo biểu cảm và chi tiết
-              trang phục theo đúng khoảnh khắc bạn muốn lưu giữ.
+              Dựng standee 3D từ ảnh thật hoặc phong cách chibi/anime theo đúng
+              biểu cảm, trang phục và khoảnh khắc bạn muốn lưu giữ.
             </p>
           </article>
           <article class="info-card">
-            <h3>Đa lớp không gian</h3>
+            <span class="step-num">02</span>
+            <h3>Đa lớp không gian sống động</h3>
             <p>
-              Mỗi Momentbox có cấu trúc nhiều tầng: hậu cảnh, trung cảnh, tiền
-              cảnh giúp chiều sâu rõ rệt ngay cả khi đặt trên bàn làm việc.
+              Cấu trúc 3 tầng rõ rệt gồm hậu cảnh, trung cảnh và tiền cảnh tạo
+              chiều sâu tự nhiên dưới mọi góc nhìn.
             </p>
           </article>
           <article class="info-card">
-            <h3>Tối ưu cho dịp đặc biệt</h3>
+            <span class="step-num">03</span>
+            <h3>Cá nhân hóa mọi dịp đặc biệt</h3>
             <p>
-              Sinh nhật, kỷ niệm yêu, tốt nghiệp hay quà tri ân doanh nghiệp đều
-              có bộ style riêng về màu, typography và thông điệp.
+              Sinh nhật, kỷ niệm yêu, đám cưới, tốt nghiệp hay quà doanh nghiệp
+              đều có bảng màu, chữ nổi và thông điệp riêng.
             </p>
           </article>
         </div>
       </section>
 
+      <!-- Services / Pricing -->
       <section class="section reveal" id="services">
-        <p class="kicker">Gói dịch vụ</p>
-        <h2>Chọn mức độ cá nhân hóa phù hợp ngân sách</h2>
+        <div class="section-head centered">
+          <p class="kicker">Gói dịch vụ</p>
+          <h2>Chọn mức độ cá nhân hóa phù hợp ngân sách</h2>
+          <p class="section-lead">
+            Minh bạch chi phí, hỗ trợ chỉnh sửa bản vẽ trước khi hoàn thiện sản
+            phẩm.
+          </p>
+        </div>
+
         <div class="pricing-grid">
           <article class="price-card">
-            <h3>Lite Box</h3>
-            <p class="price">250K</p>
-            <ul>
-              <li>1 nhân vật standee 3D</li>
-              <li>1 concept màu chủ đạo</li>
+            <div class="price-head">
+              <h3>Lite Box</h3>
+              <p class="price-desc">Gọn gàng, tinh tế cho quà tặng cá nhân</p>
+              <p class="price">250K</p>
+            </div>
+            <ul class="feature-list">
+              <li>1 nhân vật standee 3D sắc nét</li>
+              <li>1 concept màu chủ đạo theo yêu cầu</li>
               <li>Thiệp chúc mừng cá nhân hóa</li>
             </ul>
             <a
               href="https://zalo.me/0983806933"
-              class="text-link"
+              class="btn btn-ghost btn-block"
               target="_blank"
               rel="noopener noreferrer"
               >Đặt gói Lite</a
             >
           </article>
+
           <article class="price-card highlight">
-            <p class="badge">Phổ biến</p>
-            <h3>Signature Box</h3>
-            <p class="price">450K</p>
-            <ul>
-              <li>2-3 nhân vật standee 3D</li>
-              <li>Bối cảnh đa lớp theo câu chuyện</li>
-              <li>Hộp đèn mini và QR video lời chúc</li>
+            <span class="badge">Phổ biến nhất</span>
+            <div class="price-head">
+              <h3>Signature Box</h3>
+              <p class="price-desc">Được lựa chọn nhiều cho cặp đôi & sinh nhật</p>
+              <p class="price">450K</p>
+            </div>
+            <ul class="feature-list">
+              <li>2–3 nhân vật standee 3D sống động</li>
+              <li>Bối cảnh đa lớp dựng theo câu chuyện riêng</li>
+              <li>Hộp đèn LED mini & mã QR video lời chúc</li>
             </ul>
             <a
               href="https://zalo.me/0983806933"
-              class="text-link"
+              class="btn btn-block"
               target="_blank"
               rel="noopener noreferrer"
               >Đặt gói Signature</a
             >
           </article>
+
           <article class="price-card">
-            <h3>Premium Scene</h3>
-            <p class="price">700K</p>
-            <ul>
-              <li>Scene 3D toàn phần nhiều chi tiết</li>
-              <li>Khắc tên nổi + phụ kiện độc quyền</li>
-              <li>Hỗ trợ concept cho sự kiện doanh nghiệp</li>
+            <div class="price-head">
+              <h3>Premium Scene</h3>
+              <p class="price-desc">Trọn vẹn cho cưới hỏi & quà sự kiện</p>
+              <p class="price">700K</p>
+            </div>
+            <ul class="feature-list">
+              <li>Scene 3D toàn phần giàu chi tiết</li>
+              <li>Khắc tên nổi & phụ kiện thiết kế độc quyền</li>
+              <li>Hỗ trợ concept sự kiện & quà doanh nghiệp</li>
             </ul>
             <a
               href="https://zalo.me/0983806933"
-              class="text-link"
+              class="btn btn-ghost btn-block"
               target="_blank"
               rel="noopener noreferrer"
               >Đặt gói Premium</a
@@ -183,64 +267,87 @@
         </div>
       </section>
 
+      <!-- Portfolio -->
       <section class="section reveal" id="portfolio">
-        <p class="kicker">Bộ sưu tập concept</p>
-        <h2>Một vài phong cách khách hàng yêu thích</h2>
+        <div class="section-head">
+          <div>
+            <p class="kicker">Bộ sưu tập concept</p>
+            <h2>Những phong cách khách hàng yêu thích</h2>
+          </div>
+          <a href="#ai-chat" class="text-action">Tự tạo concept riêng với AI →</a>
+        </div>
+
         <div class="portfolio-grid">
           <article class="portfolio-card coral">
-            <img
-              class="portfolio-image"
-              src="https://down-vn.img.susercontent.com/file/vn-11134207-7ra0g-m938q2xytcoy33"
-              alt="Mẫu standee birthday stage với tông cam san hô"
-              loading="lazy"
-            />
-            <h3>Birthday Stage</h3>
-            <p class="portfolio-price">Giá tham khảo: 250K</p>
-            <p>Tông cam san hô rực rỡ với pháo giấy nổi 3 lớp.</p>
+            <div class="media-frame">
+              <img
+                class="portfolio-image"
+                src="https://down-vn.img.susercontent.com/file/vn-11134207-7ra0g-m938q2xytcoy33"
+                alt="Mẫu standee birthday stage với tông cam san hô"
+                loading="lazy"
+              />
+              <span class="price-tag">Từ 250K</span>
+            </div>
+            <div class="card-body">
+              <h3>Birthday Stage</h3>
+              <p>Tông cam san hô rực rỡ kết hợp pháo giấy và bánh kem nổi 3 lớp.</p>
+            </div>
           </article>
+
           <article class="portfolio-card mint">
-            <img
-              class="portfolio-image"
-              src="https://printmax.online/wp-content/uploads/2023/11/photogift.jpg"
-              alt="Mẫu standee love memory với hai nhân vật"
-              loading="lazy"
-            />
-            <h3>Love Memory</h3>
-            <p class="portfolio-price">Giá tham khảo: 450K</p>
-            <p>Phong cách dịu nhẹ, nhấn vào silhouette và timeline kỷ niệm.</p>
+            <div class="media-frame">
+              <img
+                class="portfolio-image"
+                src="https://printmax.online/wp-content/uploads/2023/11/photogift.jpg"
+                alt="Mẫu standee love memory với hai nhân vật"
+                loading="lazy"
+              />
+              <span class="price-tag">Từ 450K</span>
+            </div>
+            <div class="card-body">
+              <h3>Love Memory</h3>
+              <p>Phong cách dịu nhẹ, tôn vinh khoảnh khắc đôi lứa và timeline kỷ niệm.</p>
+            </div>
           </article>
+
           <article class="portfolio-card amber">
-            <img
-              class="portfolio-image"
-              src="https://down-vn.img.susercontent.com/file/vn-11134207-7ra0g-mabeirqmvddv33"
-              alt="Mẫu standee đám cưới với phong cách lãng mạn"
-              loading="lazy"
-            />
-            <h3>Đám cưới</h3>
-            <p class="portfolio-price">Giá tham khảo: 700K</p>
-            <p>
-              Đám cưới với phong cách lãng mạn, chi tiết hoa và ánh sáng mềm
-              mại.
-            </p>
+            <div class="media-frame">
+              <img
+                class="portfolio-image"
+                src="https://down-vn.img.susercontent.com/file/vn-11134207-7ra0g-mabeirqmvddv33"
+                alt="Mẫu standee đám cưới với phong cách lãng mạn"
+                loading="lazy"
+              />
+              <span class="price-tag">Từ 700K</span>
+            </div>
+            <div class="card-body">
+              <h3>Đám cưới Thanh Lịch</h3>
+              <p>Cổng hoa lãng mạn, chi tiết tinh xảo cùng ánh sáng ấm áp sang trọng.</p>
+            </div>
           </article>
         </div>
       </section>
 
+      <!-- Gallery Bento -->
       <section class="section reveal" id="gallery">
-        <h2>Nhiều mood standee để chọn nhanh concept phù hợp</h2>
+        <div class="section-head centered">
+          <p class="kicker">Thư viện cảm hứng</p>
+          <h2>Nhiều mood standee để chọn nhanh concept</h2>
+        </div>
+
         <div class="inspiration-grid">
-          <figure class="inspiration-card">
+          <figure class="inspiration-card featured">
             <img
               src="images/z7654710991654_f9ad055107f2097f0b849ade7435ea76.jpg"
-              alt="Standee gift box with photo"
+              alt="Hộp quà standee 3D cao cấp"
               loading="lazy"
             />
-            <figcaption>Hộp Quà Với Standee</figcaption>
+            <figcaption>Hộp Quà Standee 3D</figcaption>
           </figure>
           <figure class="inspiration-card">
             <img
               src="https://images.meesho.com/images/products/537820006/pgn32_512.webp?width=512"
-              alt="3D pop-up birthday card design"
+              alt="Thiết kế standee sinh nhật 3D"
               loading="lazy"
             />
             <figcaption>Sinh Nhật</figcaption>
@@ -248,15 +355,15 @@
           <figure class="inspiration-card">
             <img
               src="https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-lf3pct2rtea211"
-              alt="Standee couple photo display"
+              alt="Standee cặp đôi tình yêu"
               loading="lazy"
             />
-            <figcaption>Standee Cặp Đôi Tình Yêu</figcaption>
+            <figcaption>Cặp Đôi Tình Yêu</figcaption>
           </figure>
           <figure class="inspiration-card">
             <img
               src="https://lh5.googleusercontent.com/proxy/6gps95FW1a9yziJ6NL5Prao8Sc_1PRnlOQAIVvI1EJqtmrSZACksfQ6FJWsj-okJKX7zR8P4_9v93vOhmRpRyKkFkjpah7hg87m9POO5GgEdZSzprHxsVCmZIwjMR9xHpnAcFG_aIw6keglYLc-yF1YNTGyDogMG"
-              alt="3D pop-up greeting card"
+              alt="Thiệp chúc mừng 3D pop-up"
               loading="lazy"
             />
             <figcaption>Thiệp Chúc Mừng</figcaption>
@@ -264,62 +371,131 @@
           <figure class="inspiration-card">
             <img
               src="https://product.hstatic.net/1000231532/product/standee_acrylic_one_piece_chibi_-_luffy_beer_2bfc9ffd3404476c8adb77fedf596f8e_master.jpg"
-              alt="Diorama standee mini scene"
+              alt="Standee chibi nhân vật phim ảnh"
               loading="lazy"
             />
-            <figcaption>Phim ảnh</figcaption>
+            <figcaption>Phim Ảnh & Game</figcaption>
           </figure>
         </div>
       </section>
 
+      <!-- AI Chat & Image Studio -->
       <section class="section ai-chat-section reveal" id="ai-chat">
         <div class="ai-chat-copy">
-          <p class="kicker">Tư vấn nhanh bằng AI</p>
-          <h2>Hỏi ý tưởng concept trước khi nhắn Zalo</h2>
-          <p>
-            Mô tả dịp tặng, số người, màu thích hoặc ngân sách. Trợ lý sẽ gợi ý
-            concept Momentbox, lời chúc và gói phù hợp để bạn chốt nhanh hơn.
+          <p class="kicker">MomentBox AI Studio</p>
+          <h2>Tư vấn concept &amp; vẽ thử standee ngay tại đây</h2>
+          <p class="section-lead">
+            Mô tả dịp tặng, tone màu hoặc nhân vật yêu thích. Trợ lý AI sẽ tư
+            vấn gói phù hợp hoặc vẽ ngay ảnh standee mẫu để bạn hình dung trước
+            khi đặt qua Zalo.
           </p>
+
+          <div class="quick-prompts">
+            <p class="quick-prompts-label">Gợi ý thử nhanh (bấm để điền):</p>
+            <div class="prompt-chips">
+              <button
+                type="button"
+                class="prompt-chip"
+                data-prompt="Tạo ảnh standee sinh viên tốt nghiệp cầm hoa và bằng, tone xanh navy và vàng"
+              >
+                🎓 Standee tốt nghiệp
+              </button>
+              <button
+                type="button"
+                class="prompt-chip"
+                data-prompt="Tạo ảnh standee cặp đôi kỷ niệm tình yêu, hoa hồng, tone hồng pastel"
+              >
+                💗 Standee cặp đôi
+              </button>
+              <button
+                type="button"
+                class="prompt-chip"
+                data-prompt="Tạo ảnh standee nhân vật Leon Kennedy Resident Evil 4 dạng chibi"
+              >
+                🎮 Standee nhân vật game
+              </button>
+              <button
+                type="button"
+                class="prompt-chip"
+                data-prompt="Tư vấn giúp mình quà sinh nhật cho bạn gái, 2 nhân vật, ngân sách khoảng 450K"
+              >
+                🎁 Tư vấn gói 450K
+              </button>
+            </div>
+          </div>
         </div>
+
         <div class="ai-chat-panel" aria-label="Chat tư vấn AI">
+          <div class="chat-topbar">
+            <div class="chat-avatar" aria-hidden="true">M</div>
+            <div class="chat-identity">
+              <strong>Trợ lý MomentBox AI</strong>
+              <span><i class="online-dot"></i>Sẵn sàng tư vấn &amp; tạo ảnh standee</span>
+            </div>
+          </div>
+
           <div class="ai-chat-messages" id="aiChatMessages" aria-live="polite">
             <div class="ai-message ai-message-bot">
               <p>
-                Chào bạn, mình có thể gợi ý concept standee 3D theo dịp tặng,
-                tone màu, số nhân vật và ngân sách. Bạn muốn làm quà cho dịp gì?
+                Chào bạn, mình có thể tư vấn concept standee 3D theo dịp tặng,
+                ngân sách hoặc tạo ảnh mẫu ngay. Bạn muốn làm quà cho dịp gì?
               </p>
             </div>
           </div>
+
           <form class="ai-chat-form" id="aiChatForm">
             <label class="sr-only" for="aiChatInput">Nhập nội dung chat</label>
             <textarea
               id="aiChatInput"
               name="message"
-              rows="2"
+              rows="1"
               maxlength="700"
-              placeholder="Ví dụ: Quà kỷ niệm 1 năm cho bạn gái, 2 nhân vật, tone hồng..."
+              placeholder="Ví dụ: Tạo ảnh standee tốt nghiệp, hoặc hỏi tư vấn gói quà..."
               required
             ></textarea>
-            <button class="btn" type="submit">Gửi</button>
+            <button class="btn chat-send-btn" type="submit" aria-label="Gửi tin nhắn">
+              <span>Gửi</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
           </form>
           <p class="ai-chat-status" id="aiChatStatus" role="status"></p>
         </div>
       </section>
     </main>
 
+    <!-- Footer -->
     <footer class="site-footer">
-      <p>© 2026 Momentbox. Crafted for meaningful gifting.</p>
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <a href="#top" class="brand">
+            <img src="images/logo.jpg" width="40" height="40" alt="MomentBox" class="logo" />
+            <span class="brand-name">Moment<span>Box</span></span>
+          </a>
+          <p>Thiết kế hộp quà standee 3D độc bản — Giao hàng toàn quốc.</p>
+        </div>
+
+        <div class="footer-links">
+          <a href="#about">Về chúng tôi</a>
+          <a href="#services">Bảng giá</a>
+          <a href="#portfolio">Bộ sưu tập</a>
+          <a href="#ai-chat">Studio AI</a>
+          <a href="https://zalo.me/0983806933" target="_blank" rel="noopener noreferrer">Zalo: 0983 806 933</a>
+        </div>
+      </div>
+      <p class="footer-copy">© 2026 MomentBox. Crafted for meaningful gifting.</p>
     </footer>
 
-    <!-- AI Chat FAB -->
+    <!-- Floating Action Buttons -->
     <a
       class="ai-chat-fab"
       href="#ai-chat"
-      aria-label="Tư vấn AI"
-      title="Tư vấn AI"
+      aria-label="Mở Studio AI"
+      title="Tạo ảnh & Tư vấn AI"
     >
-      <span class="ai-chat-icon" aria-hidden="true">🤖</span>
-      <span class="ai-chat-text">Tư vấn AI</span>
+      <span class="ai-chat-icon" aria-hidden="true">✦</span>
+      <span class="ai-chat-text">Studio AI</span>
     </a>
 
     <a
@@ -328,7 +504,7 @@
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Liên hệ Zalo"
-      title="Liên hệ Zalo"
+      title="Chat Zalo đặt hàng"
     >
       <span class="zalo-icon" aria-hidden="true">Z</span>
       <span class="zalo-text">Chat Zalo</span>
