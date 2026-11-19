@@ -475,20 +475,138 @@ if (aiChatForm && aiChatInput && aiChatMessages) {
     aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
   };
 
-  const wantsImage = (text) => {
-    const t = text.toLowerCase();
-    if (/(giá|bao nhiêu|chi phí|ship|địa chỉ)/.test(t)) return false;
-    return (
-      /(tạo|gen|vẽ|render|làm|thiết kế|cho xem|cho mình).{0,40}(ảnh|hình|standee)/.test(t) ||
-      /(ảnh|hình).{0,20}standee/.test(t) ||
-      /standee.{0,40}(ảnh|hình)/.test(t) ||
-      /^(tạo|gen|vẽ|làm)\s.*standee/.test(t)
-    );
+  // ---- Đính kèm ảnh thật của khách ----
+  const attachInput = document.querySelector('#attachInput');
+  const attachBtn = document.querySelector('#attachBtn');
+  const attachPreview = document.querySelector('#attachPreview');
+  const attachThumb = document.querySelector('#attachThumb');
+  const attachName = document.querySelector('#attachName');
+  const attachRemove = document.querySelector('#attachRemove');
+  let attachedImage = null; // { mimeType, data (base64), dataUrl, name }
+
+  const clearAttachment = () => {
+    attachedImage = null;
+    if (attachInput) attachInput.value = '';
+    if (attachPreview) attachPreview.hidden = true;
+    aiChatInput.required = true;
   };
 
-  const addChatImage = (image) => {
+  // Thu nhỏ ảnh về tối đa 1024px (JPEG) để gửi nhanh và nhẹ
+  const resizeImageFile = (file) =>
+    new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        const maxSide = 1024;
+        const scale = Math.min(1, maxSide / Math.max(img.naturalWidth, img.naturalHeight));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.round(img.naturalWidth * scale);
+        canvas.height = Math.round(img.naturalHeight * scale);
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        URL.revokeObjectURL(url);
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+        resolve({ mimeType: 'image/jpeg', data: dataUrl.split(',')[1], dataUrl, name: file.name });
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        reject(new Error('Không đọc được ảnh này.'));
+      };
+      img.src = url;
+    });
+
+  if (attachBtn && attachInput) {
+    attachBtn.addEventListener('click', () => attachInput.click());
+
+    attachInput.addEventListener('change', async () => {
+      const [file] = attachInput.files || [];
+      if (!file) return;
+
+      if (!/^image\/(jpeg|png|webp)$/i.test(file.type)) {
+        setChatStatus('Chỉ nhận ảnh JPG, PNG hoặc WEBP.', 'error');
+        attachInput.value = '';
+        return;
+      }
+      if (file.size > 8 * 1024 * 1024) {
+        setChatStatus('Ảnh quá lớn, vui lòng chọn ảnh dưới 8MB.', 'error');
+        attachInput.value = '';
+        return;
+      }
+
+      try {
+        attachedImage = await resizeImageFile(file);
+        attachThumb.src = attachedImage.dataUrl;
+        attachName.textContent = attachedImage.name;
+        attachPreview.hidden = false;
+        aiChatInput.required = false;
+        setChatStatus('Đã chọn ảnh. Mô tả thêm (dịp, màu, "chibi" nếu muốn) rồi bấm Gửi.', 'success');
+        aiChatInput.focus();
+      } catch (err) {
+        clearAttachment();
+        setChatStatus(err.message || 'Không đọc được ảnh này.', 'error');
+      }
+    });
+  }
+
+  if (attachRemove) attachRemove.addEventListener('click', clearAttachment);
+
+  let hasGeneratedImage = false;
+  let lastSubjectSummary = '';
+
+  const isServiceQuestion = (t) =>
+    /(giá|bao nhiêu|chi phí|ship|vận chuyển|giao hàng|mấy ngày|bao lâu|địa chỉ|ở đâu|kích thước|size|chất liệu|mica|giấy|bảo hành|đặt cọc|đặt hàng|cách đặt|tư vấn gói|zalo|liên hệ|gói nào|viết prompt)/i.test(t);
+
+  const wantsImage = (text) => {
+    const t = text.toLowerCase().trim();
+    if (isServiceQuestion(t)) return false;
+    if (
+      /(tạo|gen|vẽ|render|làm|thiết kế|cho xem|cho mình).{0,40}(ảnh|hình|standee|mẫu)/.test(t) ||
+      /(ảnh|hình).{0,20}standee/.test(t) ||
+      /standee.{0,40}(ảnh|hình)/.test(t) ||
+      /^(tạo|gen|vẽ|làm|thiết kế)\s+(cho\s+mình|giúp\s+mình|mẫu|thử|1\s+bạn|1\s+anh|1\s+cô|cặp\s+đôi|nhân\s+vật)/i.test(t)
+    ) {
+      return true;
+    }
+    // Nhận diện câu chỉnh sửa nối tiếp ngay sau khi đã tạo ảnh
+    if (
+      hasGeneratedImage &&
+      t.length <= 160 &&
+      /(tạo lại|vẽ lại|sửa lại|đổi|thêm|bỏ|chuyển|sang|kiểu|chibi|bình thường|tỉ lệ|màu|tone|áo|váy|vest|tóc|hoa|cầm|đội|mũ|nền|hộp)/i.test(t)
+    ) {
+      return true;
+    }
+    return false;
+  };
+
+  const addChatImage = (image, meta) => {
     const bubble = document.createElement('div');
     bubble.className = 'ai-message ai-message-bot';
+
+    if (meta?.webLookup?.characterName) {
+      const badge = document.createElement('div');
+      badge.className = 'char-lookup-badge';
+      const refUrl = meta.webLookup.imageUrl;
+      if (typeof refUrl === 'string' && /^https:\/\//i.test(refUrl)) {
+        const thumb = document.createElement('img');
+        thumb.src = refUrl;
+        thumb.alt = meta.webLookup.characterName;
+        thumb.loading = 'lazy';
+        badge.append(thumb);
+      }
+      const info = document.createElement('div');
+      info.className = 'char-lookup-info';
+      const title = document.createElement('strong');
+      title.textContent = `Đã tra cứu tạo hình: ${meta.webLookup.characterName}`;
+      const sub = document.createElement('span');
+      const styleLabel = meta.style === 'chibi' ? 'Phong cách Chibi' : 'Tỉ lệ bình thường';
+      sub.textContent = `${meta.webLookup.source || 'Wikipedia'} • ${styleLabel}`;
+      info.append(title, sub);
+      badge.append(info);
+      bubble.append(badge);
+    }
+
     const src = `data:${image.mimeType};base64,${image.data}`;
     const img = document.createElement('img');
     img.src = src;
@@ -507,12 +625,25 @@ if (aiChatForm && aiChatInput && aiChatMessages) {
   aiChatForm.addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    const message = aiChatInput.value.trim();
-    if (!message) return;
+    const typed = aiChatInput.value.trim();
+    if (!typed && !attachedImage) return;
+
+    // Gửi kèm ảnh: lấy ảnh ra khỏi ô đính kèm rồi dọn dẹp giao diện
+    const photo = attachedImage;
+    const message = typed || 'Tạo ảnh standee giống người trong ảnh tôi gửi.';
+    clearAttachment();
 
     aiChatInput.value = '';
     aiChatInput.style.height = '';
     addChatMessage('user', message);
+    if (photo) {
+      const lastBubble = aiChatMessages.lastElementChild;
+      const thumb = document.createElement('img');
+      thumb.src = photo.dataUrl;
+      thumb.alt = 'Ảnh bạn đã gửi';
+      thumb.className = 'user-photo';
+      if (lastBubble) lastBubble.prepend(thumb);
+    }
     chatHistory.push({ role: 'user', content: message });
     setChatStatus('AI đang soạn gợi ý...', 'loading');
 
@@ -520,12 +651,16 @@ if (aiChatForm && aiChatInput && aiChatMessages) {
     if (submitButton) submitButton.disabled = true;
 
     try {
-      if (wantsImage(message)) {
-        setChatStatus('AI đang vẽ standee, vui lòng chờ 10-30 giây...', 'loading');
+      if (photo || wantsImage(message)) {
+        setChatStatus('🔍 AI đang tìm nhân vật trên mạng & vẽ standee, vui lòng chờ 10-30 giây...', 'loading');
         const imgResponse = await fetch('/api/image', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ messages: chatHistory.slice(-8) }),
+          body: JSON.stringify({
+            messages: chatHistory.slice(-8),
+            ...(lastSubjectSummary && !photo ? { previousSubject: lastSubjectSummary } : {}),
+            ...(photo ? { image: { mimeType: photo.mimeType, data: photo.data } } : {}),
+          }),
         });
         const imgData = await imgResponse.json().catch(() => ({}));
         if (!imgResponse.ok || !imgData.image) {
@@ -534,9 +669,20 @@ if (aiChatForm && aiChatInput && aiChatMessages) {
               `Chưa tạo được ảnh (mã ${imgResponse.status}). Có thể server hết thời gian chờ, bạn thử lại hoặc xem log terminal nhé.`
           );
         }
-        addChatImage(imgData.image);
-        chatHistory.push({ role: 'assistant', content: '(Đã tạo ảnh standee theo yêu cầu.)' });
-        setChatStatus('Muốn chỉnh gì (màu, trang phục, số nhân vật)? Cứ nhắn "tạo lại ảnh..." nhé.', 'success');
+        addChatImage(imgData.image, imgData.meta);
+        hasGeneratedImage = true;
+        if (imgData.meta?.summary) {
+          lastSubjectSummary = imgData.meta.summary;
+        }
+        const styleLabel = imgData.meta?.style === 'chibi' ? 'Chibi' : 'Tỉ lệ bình thường';
+        chatHistory.push({
+          role: 'assistant',
+          content: `(Đã tạo ảnh standee - ${styleLabel}${imgData.meta?.summary ? ` | Chủ thể: ${imgData.meta.summary}` : ''})`,
+        });
+        setChatStatus(
+          `Đã tạo mẫu (${styleLabel}). Bạn có thể nhắn tiếp để sửa màu, trang phục, hoặc thêm "chibi" để đổi phong cách.`,
+          'success'
+        );
         return;
       }
 

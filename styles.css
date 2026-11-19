@@ -1146,6 +1146,135 @@ h3 {
   flex-shrink: 0;
 }
 
+/* Đính kèm ảnh */
+.attach-btn {
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  border: 1.5px solid rgba(34, 23, 38, 0.12);
+  background: #faf8fa;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.attach-btn:hover {
+  color: var(--pink-deep);
+  border-color: var(--pink);
+  background: var(--surface-tint);
+  transform: translateY(-1px);
+}
+
+.attach-preview {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0 1.15rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 16px;
+  background: var(--surface-tint);
+  border: 1px dashed var(--line-pink);
+}
+
+.attach-preview[hidden] {
+  display: none;
+}
+
+.attach-preview img {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 2px solid #fff;
+  box-shadow: var(--shadow-xs);
+}
+
+.attach-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.attach-info strong {
+  font-size: 0.84rem;
+  color: var(--ink);
+}
+
+.attach-info span {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.attach-remove {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  background: #fff;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: 0.8rem;
+  box-shadow: var(--shadow-xs);
+}
+
+.attach-remove:hover {
+  color: #c22e59;
+}
+
+.ai-message-user img.user-photo {
+  max-width: 180px !important;
+  border-radius: 12px !important;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  margin-bottom: 0.5rem;
+}
+
+/* Thẻ xác nhận đã tra cứu nhân vật trên mạng */
+.char-lookup-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.65rem;
+  padding: 0.45rem 0.7rem;
+  border-radius: 12px;
+  background: var(--surface-mint);
+  border: 1px solid rgba(47, 179, 134, 0.25);
+}
+
+.ai-message .char-lookup-badge img {
+  width: 38px !important;
+  height: 38px !important;
+  max-width: 38px !important;
+  object-fit: cover;
+  border-radius: 9px !important;
+  border: 1.5px solid #fff;
+  box-shadow: var(--shadow-xs);
+  flex-shrink: 0;
+}
+
+.char-lookup-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.char-lookup-info strong {
+  font-size: 0.8rem;
+  color: #165e45;
+  line-height: 1.25;
+}
+
+.char-lookup-info span {
+  font-size: 0.73rem;
+  color: var(--ink-soft);
+}
+
 .ai-chat-status {
   margin: 0;
   padding: 0 1.25rem 0.9rem;
