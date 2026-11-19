@@ -1,4 +1,4 @@
-﻿# Momentbox - Landing Page Thiết Kế Standee 3D
+# Momentbox - Landing Page Thiết Kế Standee 3D
 
 Momentbox là trang Landing Page (trang đơn) giới thiệu dịch vụ thiết kế và sản xuất hộp quà standee 3D độc bản. Trang web tích hợp trợ lý tư vấn ý tưởng bằng trí tuệ nhân tạo (AI Assistant) để kết nối và chăm sóc khách hàng.
 
@@ -49,7 +49,7 @@ Momentbox là trang Landing Page (trang đơn) giới thiệu dịch vụ thiế
 3. **Đặt trong hộp quà**: standee đứng trong hộp trong suốt/hộp giấy mở nắp, có các lớp nền 3D (layered diorama) tạo chiều sâu.
 4. **Nền sạch**: nền trắng/kem hoặc gradient pastel, không có chi tiết thừa, không chữ nền.
 5. **Ánh sáng**: softbox mềm, bóng đổ nhẹ dưới chân đế, không cháy sáng.
-6. **Phong cách**: chibi dễ thương, màu pastel ấm, nét sạch, chất liệu giấy/in offset có độ mờ nhẹ (matte).
+6. **Phong cách**: **chỉ vẽ chibi khi khách yêu cầu chibi**; nếu không thì vẽ bình thường, tỉ lệ cơ thể tự nhiên, bám sát chủ thể. Màu ấm hài hòa, nét sạch, chất liệu giấy/in offset có độ mờ nhẹ (matte).
 7. **Không**: chữ sai chính tả, logo lạ, watermark, thêm tay/chân dư, mặt méo, nhiều nhân vật trùng lặp, nền rối.
 8. **Tỉ lệ**: 1:1 (vuông) cho sản phẩm; 4:5 cho banner dọc. Độ phân giải tối thiểu 2048 px.
 
@@ -115,9 +115,18 @@ multiple standees, messy background, cropped, overexposed, realistic human photo
 
 1. **Tra cứu trước, vẽ sau**: AI phải xác định nhân vật là ai (game/phim/anime), rồi mô tả ngoại hình đặc trưng (tóc, trang phục, màu sắc, phụ kiện) trước khi tạo ảnh.
 2. Tên mơ hồ thì chọn nhân vật nổi tiếng nhất; có nhiều lựa chọn thì ghi rõ đã chọn bản nào.
-3. Luôn chuyển thành bản **chibi** dễ thương, đúng luật standee ở mục 1.
+3. Chỉ chuyển thành bản **chibi** khi khách yêu cầu chibi; còn lại vẽ bình thường (tỉ lệ cơ thể tự nhiên), đúng luật standee ở mục 1.
 4. Người thật (nghệ sĩ, người quen): không vẽ giống khuôn mặt, chỉ vẽ phong cách/trang phục dạng hoạt hình.
 5. Không nhận diện được thì dùng nguyên mô tả của khách.
 6. Lưu ý bản quyền: nhân vật có bản quyền chỉ nên dùng làm quà cá nhân, không bán đại trà khi chưa xin phép.
 7. Chức năng này cần GEMINI_API_KEY (dùng model chữ có tra cứu web); không có key thì AI dùng nguyên mô tả của khách.
 
+
+
+### 9. Luật khi khách tải ảnh lên (nút đính kèm trong khung chat)
+
+1. Ảnh được thu nhỏ tối đa 1024px ngay trên trình duyệt trước khi gửi.
+2. AI nhìn ảnh để mô tả đúng số người, tóc, kính, trang phục, màu sắc rồi vẽ standee giống người trong ảnh (quà cá nhân của khách).
+3. Không gọi tên người trong ảnh; người nổi tiếng nêu tên thì không vẽ giống khuôn mặt.
+4. Chỉ chibi khi khách ghi rõ chibi, còn lại vẽ bình thường.
+5. Cần `GEMINI_API_KEY` để AI nhìn ảnh; ảnh khách chỉ gửi qua server để tạo ảnh, không lưu lại.
