@@ -584,29 +584,6 @@ if (aiChatForm && aiChatInput && aiChatMessages) {
     const bubble = document.createElement('div');
     bubble.className = 'ai-message ai-message-bot';
 
-    if (meta?.webLookup?.characterName) {
-      const badge = document.createElement('div');
-      badge.className = 'char-lookup-badge';
-      const refUrl = meta.webLookup.imageUrl;
-      if (typeof refUrl === 'string' && /^https:\/\//i.test(refUrl)) {
-        const thumb = document.createElement('img');
-        thumb.src = refUrl;
-        thumb.alt = meta.webLookup.characterName;
-        thumb.loading = 'lazy';
-        badge.append(thumb);
-      }
-      const info = document.createElement('div');
-      info.className = 'char-lookup-info';
-      const title = document.createElement('strong');
-      title.textContent = `Đã tra cứu tạo hình: ${meta.webLookup.characterName}`;
-      const sub = document.createElement('span');
-      const styleLabel = meta.style === 'chibi' ? 'Phong cách Chibi' : 'Tỉ lệ bình thường';
-      sub.textContent = `${meta.webLookup.source || 'Wikipedia'} • ${styleLabel}`;
-      info.append(title, sub);
-      badge.append(info);
-      bubble.append(badge);
-    }
-
     const src = `data:${image.mimeType};base64,${image.data}`;
     const img = document.createElement('img');
     img.src = src;
