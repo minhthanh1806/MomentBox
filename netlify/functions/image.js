@@ -2,7 +2,17 @@ const jsonHeaders = {
   'Content-Type': 'application/json; charset=utf-8',
 }
 const { guard } = require('../lib/guard')
-const { getKeys, timedFetch, callCloudflareChat, inspectImageWithVision } = require('../lib/ai-keys')
+const {
+  getKeys,
+  timedFetch,
+  GEMINI_IMAGE_MODELS,
+  recordModelSuccess,
+  markModelExhausted,
+  rankModelsByQuota,
+  callGeminiTextOrVision,
+  callCloudflareChat,
+  inspectImageWithVision,
+} = require('../lib/ai-keys')
 const { matchKnownCharacter } = require('../lib/characters')
 const { lookupCharacterOnline } = require('../lib/character-search')
 
@@ -12,19 +22,14 @@ const reply = (statusCode, payload) => ({
   body: JSON.stringify(payload),
 })
 
-// Phong cách: MẶC ĐỊNH vẽ tỉ lệ bình thường. CHỈ vẽ chibi khi khách yêu cầu chibi
-// Kiểm tra theo thứ tự tin nhắn để khách có thể bật/tắt chibi khi tinh chỉnh ảnh
+// Phong cách: MẶC ĐỊNH vẽ tỉ lệ bình thường. CHỈ vẽ chibi khi câu lệnh MỚI NHẤT yêu cầu chibi
 const wantsChibi = (requests) => {
-  let chibi = false
-  for (const raw of requests) {
-    const t = raw.toLowerCase()
-    if (/(không\s*chibi|ko\s*chibi|bỏ\s*chibi|đừng\s*chibi|hết\s*chibi|no\s*chibi|not\s*chibi|bình\s*thường|tỉ\s*lệ\s*(thật|người|bình\s*thường)|người\s*thật)/i.test(t)) {
-      chibi = false
-    } else if (/(chibi|q[- ]?version|đầu\s*to\s*dễ\s*thương)/i.test(t)) {
-      chibi = true
-    }
+  if (!Array.isArray(requests) || !requests.length) return false
+  const latest = requests[requests.length - 1].toLowerCase()
+  if (/(không\s*chibi|ko\s*chibi|bỏ\s*chibi|đừng\s*chibi|hết\s*chibi|no\s*chibi|not\s*chibi|bình\s*thường|tỉ\s*lệ\s*(thật|người|bình\s*thường)|người\s*thật)/i.test(latest)) {
+    return false
   }
-  return chibi
+  return /(chibi|q[- ]?version|đầu\s*to\s*dễ\s*thương)/i.test(latest)
 }
 
 // Phong cách riêng theo dịp & chủ đề (tự nhận diện từ lời khách)
@@ -98,7 +103,7 @@ const extractPreviousSubject = (messages, explicitSummary) => {
 const errorFrom = async (res, fallbackMessage) => {
   const err = await res.json().catch(() => ({}))
   const msg = err?.error?.message || err?.errors?.[0]?.message || err?.error || fallbackMessage
-  return `${fallbackMessage} (${res.status}): ${String(msg).slice(0, 160)}`
+  return `${fallbackMessage} (${res.status}): ${String(msg).slice(0, 420)}`
 }
 
 // Luật prompt standee đầy đủ (cho Gemini / OpenAI image)
@@ -213,37 +218,18 @@ const researchAndCraftSubject = async ({ requests, chibi, photoDesc, previousSub
     .filter(Boolean)
     .join('\n')
 
+  // Xoay vòng qua 6 model Gemini (ưu tiên Flash Lite 500 RPD) — không dùng google_search vì đã có Wikipedia + AniList + Vision
   if (keys.geminiKey) {
-    const callGemini = async (withSearch) => {
-      const res = await timedFetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${keys.geminiKey}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ role: 'user', parts: [{ text: `${instruction}\n\n${userPayload}` }] }],
-            ...(withSearch ? { tools: [{ google_search: {} }] } : {}),
-            generationConfig: { temperature: 0.25, maxOutputTokens: 250 },
-          }),
-        },
-        6000
-      )
-      if (!res.ok) return { ok: false, status: res.status }
-      const data = await res.json()
-      const text = data?.candidates?.[0]?.content?.parts?.map((p) => p.text || '').join('').trim()
-      return text ? { ok: true, text } : { ok: false, status: 502 }
-    }
-
-    try {
-      const first = await callGemini(true)
-      if (first.ok) return first.text
-      if (first.status !== 429 && first.status !== 401 && first.status !== 403) {
-        const second = await callGemini(false)
-        if (second.ok) return second.text
-      }
-    } catch (err) {
-      // chuyển sang Cloudflare LLM
-    }
+    const gRes = await callGeminiTextOrVision({
+      geminiKey: keys.geminiKey,
+      contents: [{ role: 'user', parts: [{ text: userPayload }] }],
+      systemPrompt: instruction,
+      temperature: 0.25,
+      maxOutputTokens: 250,
+      withSearch: false,
+      timeoutMs: 6500,
+    })
+    if (gRes.ok && gRes.text) return gRes.text
   }
 
   if (keys.cfAccount && keys.cfToken) {
@@ -401,7 +387,10 @@ const buildProviders = ({ fluxPrompt, fullPrompt, reference, keys }) => {
     providers.push({
       name: 'Gemini',
       run: async () => {
-        const models = ['gemini-2.5-flash-image', 'gemini-2.5-flash-image-preview', 'gemini-3-pro-image-preview']
+        const models = rankModelsByQuota(GEMINI_IMAGE_MODELS)
+        if (!models.length) {
+          throw new Error('Toàn bộ model ảnh Gemini đang hết lượt/limit:0 (tạm nghỉ 30 phút).')
+        }
         let lastMessage = 'Gemini không trả về ảnh.'
         for (const model of models) {
           const res = await timedFetch(
@@ -426,11 +415,20 @@ const buildProviders = ({ fluxPrompt, fullPrompt, reference, keys }) => {
           )
           if (!res.ok) {
             lastMessage = await errorFrom(res, `Gemini ${model}`)
-            if (res.status === 429 || res.status === 403 || res.status === 401) break
+            const shortReason = /limit:\s*0\b/i.test(lastMessage)
+              ? '429 limit:0'
+              : `${res.status}`
+            console.warn(`[image] Gemini ${model} (${shortReason}) -> đổi sang bản có lượt nhiều nhất kế tiếp`)
+            if (res.status === 403 || res.status === 401) break
+            markModelExhausted(model, res.status, lastMessage)
             continue
           }
           const image = extractGeminiImage(await res.json())
-          if (image) return image
+          if (image) {
+            recordModelSuccess(model)
+            return image
+          }
+          lastMessage = `Gemini ${model} không trả về ảnh.`
         }
         throw new Error(lastMessage)
       },
@@ -606,7 +604,7 @@ exports.handler = async (event) => {
       })
     } catch (err) {
       const message = err instanceof Error ? (err.name === 'AbortError' ? 'quá thời gian chờ' : err.message) : String(err)
-      console.warn(`[image] ${provider.name} failed: ${message}`)
+      console.warn(`[image] ${provider.name} skipped: ${message.slice(0, 140)}`)
       failures.push(`${provider.name}: ${message}`)
     }
   }

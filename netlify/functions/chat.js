@@ -3,7 +3,7 @@ const jsonHeaders = {
 }
 const { guard } = require('../lib/guard')
 const { CHAT_SYSTEM_PROMPT } = require('../lib/prompts')
-const { getKeys, timedFetch, callCloudflareChat } = require('../lib/ai-keys')
+const { getKeys, timedFetch, callGeminiTextOrVision, callCloudflareChat } = require('../lib/ai-keys')
 
 const cleanMessages = (messages) => {
   if (!Array.isArray(messages)) return []
@@ -42,46 +42,17 @@ const tryGeminiChat = async (geminiKey, messages, systemPrompt) => {
     geminiMessages.shift()
   }
 
-  const candidateModels = ['gemini-2.5-flash', 'gemini-2.5-flash-lite']
-  let lastError = { status: 503, message: 'Gemini API đang bận.' }
-
-  for (const model of candidateModels) {
-    try {
-      const response = await timedFetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiKey}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: geminiMessages,
-            systemInstruction: { parts: [{ text: systemPrompt }] },
-            generationConfig: { temperature: 0.65, maxOutputTokens: 1200 },
-          }),
-        },
-        10000
-      )
-
-      if (response.ok) {
-        const data = await response.json()
-        const text = data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim()
-        if (text) return { ok: true, text, provider: `Gemini (${model})` }
-      } else {
-        const errorData = await response.json().catch(() => ({}))
-        lastError = {
-          status: response.status,
-          message: errorData?.error?.message || 'Gemini API gặp sự cố.',
-        }
-        console.warn(`[chat] Gemini ${model} failed (${response.status}): ${lastError.message}`)
-        if (response.status === 429 || response.status === 401 || response.status === 403) break
-      }
-    } catch (err) {
-      lastError = {
-        status: 502,
-        message: err instanceof Error ? err.message : String(err),
-      }
-    }
-  }
-  return { ok: false, ...lastError }
+  const res = await callGeminiTextOrVision({
+    geminiKey,
+    contents: geminiMessages,
+    systemPrompt,
+    temperature: 0.65,
+    maxOutputTokens: 1200,
+    allowGemma: true,
+    timeoutMs: 9000,
+  })
+  if (res.ok) return { ok: true, text: res.text, provider: `Gemini (${res.model})` }
+  return res
 }
 
 const tryOpenAiChat = async (openaiKey, messages, systemPrompt) => {
