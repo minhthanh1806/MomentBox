@@ -148,9 +148,25 @@ const KNOWN_CHARACTERS = [
   },
 ]
 
+const NEW_SUBJECT_RE =
+  /^(tạo|vẽ|gen|render|làm|thiết kế)\s+(ảnh|hình|standee|mẫu)\b|\b(cô dâu|chú rể|cặp đôi|gia đình|bố mẹ|ba mẹ|bạn gái|bạn trai|người yêu|tốt nghiệp|cử nhân|cô giáo|thầy giáo|bác sĩ)\b/i
+
 const matchKnownCharacter = (requests) => {
-  const joined = Array.isArray(requests) ? requests.join(' ') : String(requests || '')
-  return KNOWN_CHARACTERS.find((item) => item.re.test(joined)) || null
+  const list = Array.isArray(requests) ? requests : [String(requests || '')]
+  if (!list.length) return null
+
+  const latest = list[list.length - 1]
+  const latestMatch = KNOWN_CHARACTERS.find((item) => item.re.test(latest))
+  if (latestMatch) return latestMatch
+
+  // Nếu câu mới nhất bắt đầu tạo chủ thể mới (không gọi tên nhân vật cũ), không lấy lại nhân vật cũ
+  if (NEW_SUBJECT_RE.test(latest.trim())) return null
+
+  for (let i = list.length - 2; i >= 0; i--) {
+    const prevMatch = KNOWN_CHARACTERS.find((item) => item.re.test(list[i]))
+    if (prevMatch) return prevMatch
+  }
+  return null
 }
 
 module.exports = { KNOWN_CHARACTERS, matchKnownCharacter }

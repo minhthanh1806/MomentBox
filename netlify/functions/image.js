@@ -49,9 +49,10 @@ const DEFAULT_DIORAMA =
   'signature MomentBox diorama stage with layered 3D paper arch frame, delicate miniature paper flowers, subtle floating star and heart cutouts, and warm pastel paper layers'
 
 const pickSceneTheme = (requests, knownChar) => {
-  const text = requests.join(' ')
-  const found = OCCASIONS.find((o) => o.re.test(text))
-  if (found) return found.style
+  for (let i = requests.length - 1; i >= 0; i--) {
+    const found = OCCASIONS.find((o) => o.re.test(requests[i]))
+    if (found) return found.style
+  }
   if (knownChar?.sceneTheme) return knownChar.sceneTheme
   return DEFAULT_DIORAMA
 }
@@ -158,7 +159,7 @@ const buildResearchInstruction = (chibi, hasReference, hasPreviousSubject) =>
     hasReference
       ? '3. Use the UPLOADED CUSTOMER PHOTO DESCRIPTION to keep the exact people, outfits, hair, glasses, and pose faithfully, applying only changes requested in the latest message.'
       : hasPreviousSubject
-        ? '3. The customer is refining a PREVIOUSLY GENERATED STANDY SUBJECT: KEEP the exact same person/couple/character from PREVIOUS SUBJECT MEMORY (hair, glasses, count of people, core appearance) and ONLY apply the new edits from the latest request (such as outfit change, props, or chibi/normal switch).'
+        ? '3. The customer is refining a PREVIOUSLY GENERATED STANDEE SUBJECT: KEEP the exact same person/couple/character from PREVIOUS SUBJECT MEMORY (hair, glasses, count of people, core appearance) and ONLY apply the new edits from the latest request (such as outfit change, props, or chibi/normal switch).'
         : '3. Translate all requested outfits, characters, age, gender, colors, props, and mood from Vietnamese to vivid visual English.',
     chibi
       ? '4. STYLE MANDATE: The customer explicitly requested CHIBI. Describe them in cute CHIBI proportions (adorable big head, tiny compact body, cute kawaii eyes) while preserving every iconic hair, outfit, and accessory trait.'
@@ -576,17 +577,12 @@ exports.handler = async (event) => {
   const providers = buildProviders({ fluxPrompt, fullPrompt, reference, keys })
   const failures = []
 
-  const webLookupMeta = onlineLookup?.found
-    ? {
-        characterName:
-          onlineLookup.franchise && !String(onlineLookup.characterName).toLowerCase().includes(onlineLookup.franchise.toLowerCase())
-            ? `${onlineLookup.characterName} (${onlineLookup.franchise})`
-            : onlineLookup.characterName,
-        imageUrl: onlineLookup.imageUrl || '',
-        pageUrl: onlineLookup.pageUrl || '',
-        source: onlineLookup.source || 'Wikipedia',
-      }
-    : null
+  const characterName = onlineLookup?.found
+    ? onlineLookup.franchise &&
+      !String(onlineLookup.characterName).toLowerCase().includes(onlineLookup.franchise.toLowerCase())
+      ? `${onlineLookup.characterName} (${onlineLookup.franchise})`
+      : onlineLookup.characterName
+    : knownChar?.canonicalName || null
 
   for (const provider of providers) {
     try {
@@ -597,8 +593,7 @@ exports.handler = async (event) => {
         meta: {
           provider: provider.name,
           style: chibi ? 'chibi' : 'normal',
-          character: webLookupMeta?.characterName || knownChar?.canonicalName || null,
-          webLookup: webLookupMeta,
+          character: characterName,
           summary: subjectDesc || previousSubject || requests[requests.length - 1],
         },
       })

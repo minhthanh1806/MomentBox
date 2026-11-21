@@ -21,7 +21,7 @@ const STOP_WORDS = new Set([
   'ảnh', 'hình', 'standee', '3d', 'mẫu', 'hộp', 'quà', 'kiểu', 'dạng', 'chibi', 'thật', 'bé', 'cậu', 'cô', 'chú', 'bác',
   'trong', 'của', 'với', 'và', 'hay', 'hoặc', 'ở', 'tại', 'về', 'từ', 'theo', 'như', 'này', 'đó', 'kia', 'một', 'hai', 'ba',
   'phim', 'game', 'anime', 'truyện', 'manga', 'hoạt', 'bộ', 'tựa', 'series', 'nhân', 'vật', 'nữ', 'nam', 'người',
-  'cầm', 'mặc', 'đội', 'đeo', 'ngồi', 'đứng', 'ôm', 'nhìn', 'cười', 'chạy', 'nhảy', 'tặng', 'dịp', 'làm', 'đổi', 'thêm', 'bỏ',
+  'cầm', 'mặc', 'đội', 'đeo', 'ngồi', 'đứng', 'ôm', 'nhìn', 'cười', 'chạy', 'nhảy', 'tặng', 'dịp', 'đổi', 'thêm', 'bỏ',
   'tone', 'màu', 'tông', 'nền', 'trắng', 'đen', 'xanh', 'hồng', 'vàng', 'đỏ', 'tím', 'cam', 'nâu', 'kem', 'bạc', 'mint', 'navy', 'pastel',
   'bó', 'hoa', 'bằng', 'mũ', 'nón', 'áo', 'váy', 'quần', 'vest', 'giày', 'kính', 'sách', 'nến', 'bánh', 'bóng', 'tim', 'thư', 'đèn', 'cổng',
   'dễ', 'thương', 'đẹp', 'xinh', 'ngầu', 'lạnh', 'lùng', 'vui', 'tươi', 'buồn', 'lãng', 'mạn', 'cổ', 'trang', 'truyền', 'thống',

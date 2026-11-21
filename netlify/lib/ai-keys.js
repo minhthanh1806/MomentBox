@@ -137,7 +137,6 @@ const GEMINI_VISION_TEXT_MODELS = [
 ]
 
 const GEMINI_GEMMA_MODELS = ['gemma-4-31b-it', 'gemma-4-26b-a4b-it']
-const GEMINI_CHAT_MODELS = [...GEMINI_VISION_TEXT_MODELS, ...GEMINI_GEMMA_MODELS]
 
 // Nhóm Gemini Live có hạn mức 0 / Illimité (không giới hạn lượt/ngày), chạy qua WebSocket BidiGenerateContent
 const GEMINI_LIVE_MODELS = [
@@ -220,8 +219,6 @@ const rankModelsByQuota = (modelList) => {
   // Tất cả các bản trong nhóm đều đang trong thời gian chờ hết hạn ngày -> chuyển thẳng sang nhóm/hãng mới
   return []
 }
-
-const getAvailableGeminiModels = rankModelsByQuota
 
 // Gọi Gemini Live API (hạn mức không giới hạn) qua WebSocket BidiGenerateContent
 const callGeminiLiveBidi = ({ geminiKey, model, contents, systemPrompt = '', timeoutMs = 8500 }) => {
@@ -476,13 +473,11 @@ module.exports = {
   MODEL_SPECS,
   GEMINI_VISION_TEXT_MODELS,
   GEMINI_GEMMA_MODELS,
-  GEMINI_CHAT_MODELS,
   GEMINI_IMAGE_MODELS,
   GEMINI_LIVE_MODELS,
   recordModelSuccess,
   markModelExhausted,
   rankModelsByQuota,
-  getAvailableGeminiModels,
   callGeminiLiveBidi,
   callGeminiTextOrVision,
   callCloudflareChat,
