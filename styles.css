@@ -1235,46 +1235,6 @@ h3 {
   margin-bottom: 0.5rem;
 }
 
-/* Thẻ xác nhận đã tra cứu nhân vật trên mạng */
-.char-lookup-badge {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  margin-bottom: 0.65rem;
-  padding: 0.45rem 0.7rem;
-  border-radius: 12px;
-  background: var(--surface-mint);
-  border: 1px solid rgba(47, 179, 134, 0.25);
-}
-
-.ai-message .char-lookup-badge img {
-  width: 38px !important;
-  height: 38px !important;
-  max-width: 38px !important;
-  object-fit: cover;
-  border-radius: 9px !important;
-  border: 1.5px solid #fff;
-  box-shadow: var(--shadow-xs);
-  flex-shrink: 0;
-}
-
-.char-lookup-info {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.char-lookup-info strong {
-  font-size: 0.8rem;
-  color: #165e45;
-  line-height: 1.25;
-}
-
-.char-lookup-info span {
-  font-size: 0.73rem;
-  color: var(--ink-soft);
-}
-
 .ai-chat-status {
   margin: 0;
   padding: 0 1.25rem 0.9rem;
